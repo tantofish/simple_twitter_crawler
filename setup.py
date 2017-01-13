@@ -1,18 +1,17 @@
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
     from distutils.core import setup
 
 config = {
     'description': 'crawl twitter practice',
     'author': 'Yu Tu',
-    'url': 'TBD',
-    'download_url': 'TBD',
-    'author_email': 'Tantofish@gmail.com',
-    'version': '0.1',
+    'url': 'https://github.com/tantofish/simple_twitter_crawler',
+    'download_url': 'https://github.com/tantofish/simple_twitter_crawler/archive/master.zip',
+    'author_email': 'tantofish@gmail.com',
+    'version': '0.0.2',
     'install_requires': ['nose'],
-    'packages': ['twitwi'],
-    'scripts': [],
+    'packages': find_packages(),
     'name': 'twitwi'
 }
 
