@@ -18,7 +18,7 @@ python setup.py install
 >>> tweets = td.parseTweets(iRes.text)
 >>>
 >>> t1 = tweets[0]
->>> t1.
+>>> t1.    (press tab to see what functions/attributes there are)
 t1.author          t1.getAuthor(      t1.getDate(        t1.getNumRetweet(  t1.getTimestamp(   t1.nLike           t1.setAuthor(      t1.setNumLike(     t1.setTimestamp(   t1.timestamp       t1.tweetId
 t1.content         t1.getContent(     t1.getNumLike(     t1.getTime(        t1.getTweetId(     t1.nRetweet        t1.setContent(     t1.setNumRetweet(  t1.setTweetId(     t1.toString(
 >>> t1.author
