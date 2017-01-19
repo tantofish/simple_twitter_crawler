@@ -75,7 +75,20 @@ class TwitterDao:
         self.maxTweetId = match.group(2)
         self.positionCrumb = match.group(3)
 
+        self._ajaxUri.updateParams(self._uri.params)
+
         return self.parseTweets()
+
+    def searchFromUrl(self, url):
+        self._uri = Uri(url)
+        return self._search()
+
+    def searchFromQuery(self, query, tab='latest'):
+        self._uri.updateParams({
+            'q' : query,
+            'f' : TwitterDao.tabMap.get(tab,''),
+        })
+        return self._search()
 
     def hasNextPage(self):
         return self._hasNextPage
@@ -91,19 +104,9 @@ class TwitterDao:
 
         return self.parseTweets()
 
-    def searchFromUrl(self, url):
-        self._uri = Uri(url)
-        return self._search()
-
-    def searchFromQuery(self, query, tab='latest'):
-        self._uri.updateParams({
-            'q' : query,
-            'f' : TwitterDao.tabMap.get(tab,''),
-        })
-        return self._search()
-
     def setParams(self, params):
         self._uri.updateParams(params)
+        self._ajaxUri.updateParams(params)
         return self
     
     def parseTweet(self, soup):
