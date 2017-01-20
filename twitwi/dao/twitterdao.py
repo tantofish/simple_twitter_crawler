@@ -37,6 +37,8 @@ class TwitterDao:
                 'include_available_features' : '1',
             })
 
+        self._session = requests.Session()
+        self._session.headers.update({'User-Agent' : 'Mozilla/5.0'})
         self._res = ''
         self._soup = ''
         self._json = ''
@@ -65,7 +67,7 @@ class TwitterDao:
         return self.positionCrumb
 
     def _search(self):
-        self._res = requests.get(self._uri.getUrl())
+        self._res = self._session.get(self._uri.getUrl())
         soup = BeautifulSoup(self._res.text,'lxml')
         self._soup = soup
 
@@ -96,7 +98,7 @@ class TwitterDao:
     def getNextPage(self):
         max_position = 'TWEET-%s-%s-%s' % (self.minTweetId, self.maxTweetId, self.positionCrumb)
         self._ajaxUri.updateParams({'max_position' : max_position})
-        self._res = requests.get(self._ajaxUri.getUrl())
+        self._res = self._session.get(self._ajaxUri.getUrl())
 
         self._json = json.loads(self._res.text)
         self._hasNextPage = self._json.get('has_more_items')
