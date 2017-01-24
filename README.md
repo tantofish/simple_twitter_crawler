@@ -10,7 +10,7 @@ python setup.py install
 
 ## How to Use
 ```python
-from import twitwi.crawler import crawl
+from twitwi.crawler import crawl
 crawl('@upshelp', '2017-01-23', 'TestFilename.csv')
 ```
 
