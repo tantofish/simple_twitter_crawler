@@ -67,4 +67,4 @@ class CsvDao:
 
     def commit(self):
         self.f.close()
-        print('File saved to : %s%s' % (self.writePath, self.filename))
+        print('File saved to : %s/%s' % (self.writePath, self.filename))
