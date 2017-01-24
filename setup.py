@@ -9,8 +9,13 @@ config = {
     'url': 'https://github.com/tantofish/simple_twitter_crawler',
     'download_url': 'https://github.com/tantofish/simple_twitter_crawler/archive/master.zip',
     'author_email': 'tantofish@gmail.com',
-    'version': '0.0.7',
-    'install_requires': ['nose'],
+    'version': '0.0.8',
+    'install_requires': [
+        'nose',
+        'BeautifulSoup',
+        'lxml',
+        'requests',
+    ],
     'packages': find_packages(),
     'name': 'twitwi'
 }

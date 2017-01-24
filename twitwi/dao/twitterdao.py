@@ -5,6 +5,7 @@ import lxml
 import re
 import requests
 import json
+import datetime
 
 class TwitterDao:
 
@@ -42,6 +43,9 @@ class TwitterDao:
         self._res = ''
         self._soup = ''
         self._json = ''
+        self._lang = ''
+        self._since = ''
+        self._until = ''
         self.minTweetId = ''
         self.maxTweetId = ''
         self.positionCrumb = ''
@@ -68,10 +72,9 @@ class TwitterDao:
 
     def _search(self):
         self._res = self._session.get(self._uri.getUrl())
-        soup = BeautifulSoup(self._res.text,'lxml')
-        self._soup = soup
+        self._soup = BeautifulSoup(self._res.text,'lxml')
 
-        self.data_max_position = soup.select('.stream-container')[0].get('data-max-position')
+        self.data_max_position = self._soup.select('.stream-container')[0].get('data-max-position')
         match = re.compile('^TWEET-(\d*)-(\d*)-(.*)$').match(self.data_max_position)
         self.minTweetId = match.group(1)
         self.maxTweetId = match.group(2)
@@ -84,6 +87,38 @@ class TwitterDao:
     def searchFromUrl(self, url):
         self._uri = Uri(url)
         return self._search()
+
+
+    def search(self, query):
+        fullQuery = query
+
+        if self._lang:
+            fullQuery += ' lang:' + self._lang
+        if self._since:
+            fullQuery += ' since:' + self._since.strftime('%Y-%m-%d')
+        if self._until:
+            fullQuery += ' until:' + self._until.strftime('%Y-%m-%d')
+
+        self._uri.updateParams({'q' : fullQuery})
+        return self._search()
+    
+    def tab(self, tab):
+        self._uri.updateParams({'f' : TwitterDao.tabMap.get(tab,'')})
+        return self
+
+    def lang(self, lang):
+        self._lang = lang
+        return self
+
+    def since(self, since):
+        self._since = datetime.datetime.strptime(since,'%Y-%m-%d')
+        return self
+
+    def until(self, until):
+        self._until = datetime.datetime.strptime(until,'%Y-%m-%d')
+        if self._since and self._until <= self._since:
+            raise Exception("'until' must be later than 'since'")
+        return self
 
     def searchFromQuery(self, query, tab='latest'):
         self._uri.updateParams({
@@ -118,6 +153,7 @@ class TwitterDao:
             tweetId = soup.get('data-item-id'),
             content = soup.select_one('.tweet-text').text,
             author = soup.select_one('.fullname').text.split('\n')[0],
+            authorId = soup.select_one('.username').text,
             timestamp = soup.select_one('._timestamp').get('data-time'),
             nLike = int(soup.select(nLikeSelector)[0].get('data-tweet-stat-count')),
             nRetweet = int(soup.select(nRetweetSelector)[0].get('data-tweet-stat-count'))

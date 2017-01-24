@@ -5,6 +5,7 @@ class Tweet:
         self.timestamp = ""
         self.content = ""
         self.author = ""
+        self.author = ""
         self.nLike = ""
         self.nRetweet = ""
         self.tweetId = ""
@@ -36,6 +37,12 @@ class Tweet:
     def getAuthor(self):
         return self.author
 
+    def setAuthorId(self, authorId):
+        self.authorId = authorId
+
+    def getAuthorId(self):
+        return self.authorId
+
     def setNumLike(self, nLike):
         self.nLike = nLike
 
@@ -57,6 +64,7 @@ class Tweet:
     def toString(self):
         return "=========== Tweet ID: " + self.tweetId + " ===========\n" + \
                "  Author: " + self.author + "\n" + \
+               "  Author ID: " + self.author_id + "\n" \
                "  Date: " + self.getDate() + "\n" + \
                "  Time: " + self.getTime() + "\n" + \
                "  Content: " + self.content + "\n" + \
