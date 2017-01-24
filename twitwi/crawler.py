@@ -6,34 +6,38 @@ import os
 
 def crawl(
         query,
-        date = datetime.date.today().strftime('%Y-%m-%d'),
+        targetDate = datetime.date.today().strftime('%Y-%m-%d'),
         filename = 'TwitwiOutput.csv',
         filepath = os.getcwd()
     ):
-    dao = TwitterDao().tab('latest').lang('en')
-    tweets = dao.until(date).search(query)
 
+
+    def saveTweets(tweets, nTweets):
+        trueLastRecordDate = tweets[-1].getDate()
+
+        tweets = [t for t in tweets if t.getDate() == targetDate]
+        nTweets += len(tweets)
+        tDate = tweets[-1].getDate()
+        tTime = tweets[-1].getTime()
+        csvDao.writeTweets(tweets)
+        print('Accumulated tweets: %d. Last record date,time: %s %s' % (nTweets, tDate, tTime))
+        time.sleep(0.5)
+
+        return trueLastRecordDate, nTweets
+   
+    dao = TwitterDao().tab('latest').lang('en')
     csvDao = CsvDao(writePath=filepath, filename=filename) \
                .setTargetColumns(['Author ID','Content','Time','Date']) \
                .writeHeaders()
 
-    csvDao.writeTweets(tweets)
+    tweets = dao.until(targetDate).search(query)
+    lastRecordDate, nTweets = saveTweets(tweets, 0)
 
-    nTweets = len(tweets)
-    tDate = tweets[-1].getDate()
-    tTime = tweets[-1].getTime()
-    print('accumulated tweets: %d, last record datetime: %s %s' % (nTweets, tDate, tTime))
-    time.sleep(0.5)
-    
-    while dao.hasNextPage() and date == tDate:
+    while dao.hasNextPage() and targetDate == lastRecordDate:
         tweets = dao.getNextPage()
-        csvDao.writeTweets(tweets)
-        nTweets += len(tweets)
-        tDate = tweets[-1].getDate()
-        tTime = tweets[-1].getTime()
-        print('accumulated tweets: %d, last record datetime: %s %s' % (nTweets, tDate, tTime))
-        time.sleep(0.5)
+        lastRecordDate, nTweets = saveTweets(tweets, nTweets)
 
+        
     csvDao.commit()
 
 

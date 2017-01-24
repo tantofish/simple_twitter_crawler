@@ -23,16 +23,16 @@ COL_GETTER_MAP = {
 
 class CsvDao:
     def __init__(self, **kwargs):
-        self.writePath = os.getcwd() + '/'
+        self.writePath = os.getcwd()
         self.filename = 'TwitwiCsvOutputExample.csv'
         self.targetColumns = []
         
         self.__dict__.update(kwargs)
 
         if (sys.version_info >= (3,0)):
-            self.f = open(self.writePath + self.filename, 'w', encoding='utf-8')
+            self.f = open(self.writePath + '/' + self.filename, 'w', encoding='utf-8')
         else:
-            self.f = open(self.writePath + self.filename, 'w')
+            self.f = open(self.writePath + '/' + self.filename, 'w')
         self.csvWriter = csv.writer(self.f)
 
     def setTargetColumns(self, cols):
