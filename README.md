@@ -9,11 +9,13 @@ python setup.py install
 ```
 
 ## How to Use
+### simple demo
 ```python
 from twitwi.crawler import crawl
 crawl('@upshelp', '2017-01-23', 'TestFilename.csv')
 ```
 
+### use the DAOs
 ```python
 import time
 from twitwi.dao.twitterdao import TwitterDao

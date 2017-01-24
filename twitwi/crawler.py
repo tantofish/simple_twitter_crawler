@@ -4,19 +4,6 @@ from twitwi.dao.twitterdao import TwitterDao
 from twitwi.dao.filedao    import CsvDao
 import os
 
-#class TwitterCrawler:
-#
-#    def __init__(self):
-#        twiDao = TwitterDao().tab('latest').lang('en')
-#        csvDao = CsvDao(writePath='', filename='TwitwiOutput.csv') \
-#                   .setTargetColumns(['Author ID','Content','Time','Date']) \
-#                   .writeHeaders()
-#    
-#    def crawl(self, query, since = None, until = None):
-
-
-
-
 def crawl(
         query,
         date = datetime.date.today().strftime('%Y-%m-%d'),
