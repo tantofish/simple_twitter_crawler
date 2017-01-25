@@ -39,7 +39,7 @@ class TwitterDao:
             })
 
         self._session = requests.Session()
-        self._session.headers.update({'User-Agent' : 'Mozilla/5.0'})
+        self._session.headers.update({'User-Agent' : '*'})
         self._res = ''
         self._soup = ''
         self._json = ''
