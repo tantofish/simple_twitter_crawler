@@ -16,13 +16,16 @@ def crawl(
         trueLastRecordDate = tweets[-1].getDate()
 
         tweets = [t for t in tweets if t.getDate() == targetDate]
-        nTweets += len(tweets)
-        tDate = tweets[-1].getDate()
-        tTime = tweets[-1].getTime()
-        csvDao.writeTweets(tweets)
-        print('Accumulated tweets: %d. Last record date,time: %s %s' % (nTweets, tDate, tTime))
-        time.sleep(0.5)
+        if len(tweets) > 0:
+            nTweets += len(tweets)
+            tDate = tweets[-1].getDate()
+            tTime = tweets[-1].getTime()
+            csvDao.writeTweets(tweets)
+            print('Accumulated tweets: %d. Last record date,time: %s %s' % (nTweets, tDate, tTime))
+        else:
+            print('To the end.')
 
+        time.sleep(0.5)
         return trueLastRecordDate, nTweets
    
     dao = TwitterDao().tab('latest').lang('en')
