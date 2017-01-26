@@ -13,10 +13,12 @@ def crawl(
 
 
     def saveTweets(tweets, nTweets):
-        trueLastRecordDate = tweets[-1].getDate()
+        if not len(tweets):
+            return lastRecordDate, nTweets 
 
+        trueLastRecordDate = tweets[-1].getDate()
         tweets = [t for t in tweets if t.getDate() == targetDate]
-        if len(tweets) > 0:
+        if len(tweets) > 1:
             nTweets += len(tweets)
             tDate = tweets[-1].getDate()
             tTime = tweets[-1].getTime()
@@ -25,7 +27,7 @@ def crawl(
         else:
             print('To the end.')
 
-        time.sleep(0.5)
+        time.sleep(0.8)
         return trueLastRecordDate, nTweets
    
     dao = TwitterDao().tab('latest').lang('en')
@@ -40,7 +42,6 @@ def crawl(
         tweets = dao.getNextPage()
         lastRecordDate, nTweets = saveTweets(tweets, nTweets)
 
-        
     csvDao.commit()
 
 

@@ -49,7 +49,8 @@ class TwitterDao:
         self.minTweetId = ''
         self.maxTweetId = ''
         self.positionCrumb = ''
-        self._hasNextPage = True
+        self._hasNextPage = 2
+        self._isFirstAjax = True
         self.__dict__.update(kwargs)
 
     def getUri(self):
@@ -82,6 +83,7 @@ class TwitterDao:
 
         self._ajaxUri.updateParams(self._uri.params)
 
+        self._isFirstAjax = True
         return self.parseTweets()
 
     def searchFromUrl(self, url):
@@ -131,12 +133,26 @@ class TwitterDao:
         return self._hasNextPage
 
     def getNextPage(self):
-        max_position = 'TWEET-%s-%s-%s' % (self.minTweetId, self.maxTweetId, self.positionCrumb)
+        if self._isFirstAjax:
+            max_position = self.data_max_position
+            self._isFirstAjax = False
+        else:
+            max_position = 'TWEET-%s-%s-%s' % (self.minTweetId, self.maxTweetId, self.positionCrumb)
+
         self._ajaxUri.updateParams({'max_position' : max_position})
         self._res = self._session.get(self._ajaxUri.getUrl())
 
+
         self._json = json.loads(self._res.text)
-        self._hasNextPage = self._json.get('has_more_items')
+        if self._json.get('has_more_items'):
+            self._hasNextPage = 2
+        else:
+            self._hasNextPage -= 1
+            print("hasNextPage returned as false, quota -= 1")
+            print(self._ajaxUri.getUrl())
+
+        #self._hasNextPage = self._json.get('has_more_items')
+
         self._soup = BeautifulSoup(self._json.get('items_html'), 'lxml')
 
         return self.parseTweets()
@@ -170,6 +186,7 @@ class TwitterDao:
         tweetElements = soup.select('li.stream-item div.tweet')
         tweetList     = [ self.parseTweet(t) for t in tweetElements ]
 
-        self.minTweetId = str(min([int(t.tweetId) for t in tweetList]))
+        if len(tweetList) > 0 :
+            self.minTweetId = str(min([int(t.tweetId) for t in tweetList]))
 
         return tweetList
