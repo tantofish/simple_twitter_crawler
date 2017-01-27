@@ -9,10 +9,20 @@ python setup.py install
 ```
 
 ## How to Use
-### simple demo
+### use the TwitterCrawler (which is resticted to some usage format)
 ```python
-from twitwi.crawler import crawl
-crawl('@upshelp', '2017-01-23', 'TestFilename.csv')
+from twitwi.crawler import TwitterCrawler
+crawler = TwitterCrawler()
+from twitwi.crawler import TwitterCrawler
+crawler = TwitterCrawler()
+crawler.since('2015-01-01') \
+       .until('2015-01-09') \
+       .target('@fedexhelp') \
+       .lang('en') \
+       .tab('latest') \
+       .saveAs('Fedex') \
+       .go()
+
 ```
 
 ### use the DAOs

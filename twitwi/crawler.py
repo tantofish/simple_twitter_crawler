@@ -143,11 +143,10 @@ class TwitterCrawler:
 
 if __name__ == '__main__':
     crawler = TwitterCrawler()
-    crawler.since('2015-01-01') \
-           .until('2016-02-01') \
+    crawler.since('2016-12-30') \
+           .until('2017-01-02') \
            .target('@fedexhelp') \
            .lang('en') \
            .tab('latest') \
-           .saveTo('/Users/yutu/Desktop/twitter') \
            .saveAs('Fedex') \
            .go()
