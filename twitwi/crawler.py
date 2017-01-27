@@ -29,6 +29,10 @@ class TwitterCrawler:
 
 
     def _filterTweets(self, tweets):
+        if len(tweets) == 0:
+            print('len(tweets) == 0, nothing to write.')
+            return []
+
         # get the date of the true last record
         self.trueLastRecordDate = tweets[-1].getDate()
 
@@ -108,11 +112,12 @@ class TwitterCrawler:
 
         dao = TwitterDao().tab(self._tab).lang(self._lang).until(self._targetDate)
 
+        self.nTweets = 0
         tweets = dao.search(self._query)
         tweets = self._filterTweets(tweets)
 
         if (len(tweets) > 0):
-            print('======== Start crawling!!! ========')
+            print('=============== Start crawling!!! ===============')
             print('  target: %s' % self._query)
             print('  tab   : %s' % self._tab)
             print('  lang  : %s' % self._lang)
@@ -133,18 +138,18 @@ class TwitterCrawler:
 
                 self._saveTweets(tweets)
 
-            print()
+            print('')
             self.csvDao.commit()
         else:
-            print('======== No records in date: %s ========' % self._targetDate)
+            print('=============== No records in date: %s ===============' % self._targetDate)
 
         return self
 
 
 if __name__ == '__main__':
     crawler = TwitterCrawler()
-    crawler.since('2016-12-30') \
-           .until('2017-01-02') \
+    crawler.since('2015-01-08') \
+           .until('2015-01-09') \
            .target('@fedexhelp') \
            .lang('en') \
            .tab('latest') \
