@@ -22,6 +22,7 @@ class TwitterCrawler:
         self._tab      = 'latest'                # top, latest, people, videos, news, photo
         self._lang     = 'en'                    # language
         self._query    = '@upshelp'              # name of the target timeline
+        self._targetColumns = ['Author ID','Content','Time','Date']
         self.nTweets  = 0
         self.lastRecordDate = ''
         self.trueLastRecordDate = ''
@@ -77,6 +78,10 @@ class TwitterCrawler:
         self.filename = filename
         return self
 
+    def setTargetColumns(self, targetColumns):
+        self._targetColumns = targetColumns
+        return self
+
     def saveTo(self, filepath):
         self.filepath = filepath
         return self
@@ -124,7 +129,7 @@ class TwitterCrawler:
             print('  date  : %s' % self._targetDate)
 
             self.csvDao = CsvDao(writePath=self.filepath, filename=self.filename) \
-                            .setTargetColumns(['Author ID','Content','Time','Date']) \
+                            .setTargetColumns(self._targetColumns) \
                             .writeHeaders()
 
             self._saveTweets(tweets)
@@ -150,6 +155,7 @@ if __name__ == '__main__':
     crawler = TwitterCrawler()
     crawler.since('2015-01-08') \
            .until('2015-01-09') \
+           .setTargetColumns(['Author ID', 'Date', 'Time', 'Content']) \
            .target('@fedexhelp') \
            .lang('en') \
            .tab('latest') \
