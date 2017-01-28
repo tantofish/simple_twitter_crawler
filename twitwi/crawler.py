@@ -72,11 +72,16 @@ class TwitterCrawler:
         
         lastRecordDate = tweets[-1].getDate()
         lastRecordTime = tweets[-1].getTime()
-        print('Accumulated tweets: %d. Last record date,time: %s %s' % (
+        print '  Accumulated Tweets: %d. Lastest Record Datetime: %s %s' % \
+        (
             self._nTweets,
             lastRecordDate,
-            lastRecordTime)
-        )
+            lastRecordTime
+        ),
+
+        print "\r",
+        sys.stdout.flush()
+
         return 1
 
     def go(self):
@@ -96,6 +101,7 @@ class TwitterCrawler:
             print('  tab   : %s' % self._tab)
             print('  lang  : %s' % self._lang)
             print('  date  : from %s to %s' % (self._since, self._until))
+            print('')
 
             # initial csv dao (file pointer and csv writer)
             self.csvDao = CsvDao(writePath=self._filepath, filename=self._filename) \
@@ -107,8 +113,9 @@ class TwitterCrawler:
                 self._saveTweets(tweets)
                 tweets = dao.getNextPage()
 
-            self.csvDao.commit()
             print('')
+            print('')
+            self.csvDao.commit()
         else:
             print('=============== No Records Found ===============')
             print('  target: %s' % self._query)
@@ -138,16 +145,17 @@ def example1():
 
 # example 2 crawl one year into 12 files
 def example2():
-    start_date = date(2015,1,1)
+    start_date = date(2015,9,1)
 
     print("Hello! We are going to crawler the following sets of data:")
     print("")
     for i in range(0,12):
         since = start_date + relativedelta(months=i)
+        month = since.month
         until = start_date + relativedelta(months=i+1)
         since = since.strftime('%Y-%m-%d')
         until = until.strftime('%Y-%m-%d')
-        filename = 'FEDEX_2015-%02d.csv' % (i+1)
+        filename = 'FEDEX_2015-%02d.csv' % month
         print("    %2d. since: %s, until: %s, save as: %s" % ((i+1), since, until, filename))
 
     print("")
@@ -159,10 +167,11 @@ def example2():
         
     for i in range(0,12):
         since = start_date + relativedelta(months=i)
+        month = since.month
         until = start_date + relativedelta(months=i+1)
         since = since.strftime('%Y-%m-%d')
         until = until.strftime('%Y-%m-%d')
-        filename = 'FEDEX_2015-%02d.csv' % (i+1)
+        filename = 'FEDEX_2015-%02d.csv' % month
 
         crawler = TwitterCrawler()
         crawler.init() \
