@@ -9,7 +9,7 @@ config = {
     'url': 'https://github.com/tantofish/simple_twitter_crawler',
     'download_url': 'https://github.com/tantofish/simple_twitter_crawler/archive/master.zip',
     'author_email': 'tantofish@gmail.com',
-    'version': '0.0.12',
+    'version': '0.0.13',
     'install_requires': [
         'nose',
         'BeautifulSoup',

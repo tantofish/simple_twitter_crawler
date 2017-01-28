@@ -30,9 +30,9 @@ class CsvDao:
         self.__dict__.update(kwargs)
 
         if (sys.version_info >= (3,0)):
-            self.f = open(self.writePath + '/' + self.filename, 'w', encoding='utf-8')
+            self.f = open(self.writePath + '/' + self.filename, 'wb', encoding='utf-8')
         else:
-            self.f = open(self.writePath + '/' + self.filename, 'w')
+            self.f = open(self.writePath + '/' + self.filename, 'w', newlinw='')
         self.csvWriter = csv.writer(self.f)
 
     def setTargetColumns(self, cols):
