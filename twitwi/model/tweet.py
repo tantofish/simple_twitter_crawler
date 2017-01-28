@@ -18,11 +18,11 @@ class Tweet:
         return self.timestamp
 
     def getTime(self):
-        return datetime.fromtimestamp(int(self.timestamp)) \
+        return datetime.utcfromtimestamp(int(self.timestamp)) \
                        .strftime('%H:%M:%S')
 
     def getDate(self):
-        return datetime.fromtimestamp(int(self.timestamp)) \
+        return datetime.utcfromtimestamp(int(self.timestamp)) \
                        .strftime('%Y-%m-%d')
 
     def setContent(self, content):

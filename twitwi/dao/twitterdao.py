@@ -142,16 +142,8 @@ class TwitterDao:
         self._ajaxUri.updateParams({'max_position' : max_position})
         self._res = self._session.get(self._ajaxUri.getUrl())
 
-
         self._json = json.loads(self._res.text)
-        if self._json.get('has_more_items'):
-            self._hasNextPage = 2
-        else:
-            self._hasNextPage -= 1
-            print("hasNextPage returned as false, quota -= 1")
-            print(self._ajaxUri.getUrl())
-
-        #self._hasNextPage = self._json.get('has_more_items')
+        self._hasNextPage = self._json.get('has_more_items')
 
         self._soup = BeautifulSoup(self._json.get('items_html'), 'lxml')
 
