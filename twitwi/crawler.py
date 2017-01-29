@@ -72,14 +72,14 @@ class TwitterCrawler:
         
         lastRecordDate = tweets[-1].getDate()
         lastRecordTime = tweets[-1].getTime()
-        print '  Accumulated Tweets: %d. Lastest Record Datetime: %s %s' % \
+        print '\r  Accumulated Tweets: %d. Lastest Record Datetime: %s %s' % \
         (
             self._nTweets,
             lastRecordDate,
             lastRecordTime
         ),
 
-        print "\r",
+        print "\r\r",
         sys.stdout.flush()
 
         return 1
@@ -145,11 +145,12 @@ def example1():
 
 # example 2 crawl one year into 12 files
 def example2():
-    start_date = date(2015,9,1)
+    start_date = date(2015,1,1)     # the start date for crawl
+    nMonth     = 24                 # n month to crawl
 
     print("Hello! We are going to crawler the following sets of data:")
     print("")
-    for i in range(0,12):
+    for i in range(0,nMonth):
         since = start_date + relativedelta(months=i)
         month = since.month
         year  = since.year
@@ -166,7 +167,7 @@ def example2():
     print("Here we go!!")
     print("")
         
-    for i in range(0,12):
+    for i in range(0,nMonth):
         since = start_date + relativedelta(months=i)
         month = since.month
         year  = since.year
