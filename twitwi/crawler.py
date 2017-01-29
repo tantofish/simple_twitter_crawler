@@ -152,10 +152,11 @@ def example2():
     for i in range(0,12):
         since = start_date + relativedelta(months=i)
         month = since.month
+        year  = since.year
         until = start_date + relativedelta(months=i+1)
         since = since.strftime('%Y-%m-%d')
         until = until.strftime('%Y-%m-%d')
-        filename = 'FEDEX_2015-%02d.csv' % month
+        filename = 'FEDEX_%4d-%02d.csv' % (year, month)
         print("    %2d. since: %s, until: %s, save as: %s" % ((i+1), since, until, filename))
 
     print("")
@@ -168,10 +169,11 @@ def example2():
     for i in range(0,12):
         since = start_date + relativedelta(months=i)
         month = since.month
+        year  = since.year
         until = start_date + relativedelta(months=i+1)
         since = since.strftime('%Y-%m-%d')
         until = until.strftime('%Y-%m-%d')
-        filename = 'FEDEX_2015-%02d.csv' % month
+        filename = 'FEDEX_%4d-%02d.csv' % (year, month)
 
         crawler = TwitterCrawler()
         crawler.init() \
